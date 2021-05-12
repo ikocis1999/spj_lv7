@@ -1,14 +1,42 @@
-<div class="media" ng-app="vijesti-app">
-	<div ng-controller="controllerVijesti" class="media-body">
-		<h4 class="media-heading"><span class="label label-info">Datum</span> Naziv</h4>
-		<div class="desc">
-			<input type="text" ng-model="inputTxt" /><br><br>
-			<button ng-click="open()" class="btn btn-primary">Otvori modal</button><br><br>
-			<ul>
-				<li ng-repeat="vijest in oVijesti | filter: inputTxt">
-					{{vijest.post_naziv}}
-				</li>
-			</ul>
+<div ng-app="vijesti-app"><br><br>
+	<input placeholder="Tražilica" type="text" ng-model="inputTxt" /><br><br>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-inline">
+				<button ng-click="open()" class="btn btn-primary">Otvori modal</button>
+				<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#smallModal">Dodaj novu vijest</a>
+			</div>
 		</div>
 	</div>
+	<br><br>
+	<div ng-controller="controllerVijesti" ng-repeat="vijest in oVijesti | filter: inputTxt">
+		
+			
+		<h4 class="media-heading"><span class="label label-info">Datum: {{vijest.datum | datum}}</span> {{vijest.post_naziv}}</h4>
+		<div class="desc">{{vijest.post_tekst}}<button id={{vijest.post_id}} onclick="ObrisiVijest(this.id)">Obriši</button>
+		</div>
+	</div>
+</div>
+
+<div class="row text-center">
+      
+</div>
+
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Dodavanje nove vijesti</h4>
+      </div>
+      <div class="modal-body">
+        <label for="post_naziv">Naziv: </label><input type="text" id="post_naziv" name="post_naziv"><br><br>
+		<label for="post_tekst">Tekst: </label><input type="text" id="post_tekst" name="post_tekst">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="DodajVijest();">Dodaj</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -36,50 +36,60 @@ oVijestiModul.filter('datum', function(){
 	}
 });
 
-oVijestiModul.service('modal', function(){
-	this.otvoriModal = function(sHref)
+function DodajVijest()
+{
+	var sVijestNaziv=$("#post_naziv").val();
+	var sVijestTekst=$("#post_tekst").val();
+	if(sVijestNaziv=="" || sVijestTekst=="")
 	{
-		$('#modals').removeData('bs.modal');
-	 	$('#modals').modal({
-	 		remote: sHref,
-	 		show: true
-	 	});
-	};
-});
-oVijestiModul.controller('MojKontoler',function($scope){
-	
-});
-oVijestiModul.diretive('modal',function(){
-	return{
-		template: '<div class="modal fade" id="modals" tabindex="-1" role="dialog" aria-hidden="true">'+
-					'<div class="modal-dialog">'+
- 						'<div class="modal-content">'+
- 							'Modal'+
- 						'</div>'+
- 					 '</div>'+
-					'</div>',
-		restrict: "E",
-		transclude: true,
-        replace:true,
-      	scope:true,
-      	link: function postLink(scope, element, attrs) {
-        scope.title = attrs.title;
-        scope.$watch(attrs.visible, function(value){
-          if(value == true)
-            $(element).modal('show');
-          else
-            $(element).modal('hide');
-        });
-        $(element).on('shown.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = true;
-          });
-        });
-        $(element).on('hidden.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = false;
-          });
-        });
-    	}
-	};
-});
+		alert('Popunite sva polja');
+	}
+	else
+	{
+		$.ajax(
+		{
+			url: 'http://localhost/spj_lv7/vijesti.php', 
+			type: 'POST',
+			datatype: 'html',
+			data: 
+			{
+				akcija: 'dodaj_vijest',
+				vijest_naziv: sVijestNaziv,
+				vijest_tekst: sVijestTekst
+			},
+			success: function (sOdgovorPosluzitelja)
+			{
+				alert('Vijest je uspješno dodana!');
+			},
+			error: function(XMLHttpRequest, textStatus, exception)
+			{
+				console.log('Došlo je do pogreške');
+			},
+			async:true
+		});
+	}
+}
+function ObrisiVijest(nVijestID)
+{
+	$.ajax(
+	{
+		url: 'http://localhost/spj_lv7/vijesti.php', 
+		type: 'POST',
+		datatype: 'html',
+		data: 
+		{
+			akcija: 'obrisi_vijest',
+			vijest_id: nVijestID
+		},
+		success: function (sOdgovorPosluzitelja)
+		{
+			alert('Vijest je uspješno obrisana');
+		},
+		error: function(XMLHttpRequest, textStatus, exception)
+		{
+			console.log('Došlo je do pogreške');
+		},
+		async:true
+	});
+}
+
