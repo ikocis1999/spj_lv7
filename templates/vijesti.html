@@ -1,0 +1,14 @@
+<div class="media" ng-app="vijesti-app">
+	<div ng-controller="controllerVijesti" class="media-body">
+		<h4 class="media-heading"><span class="label label-info">Datum</span> Naziv</h4>
+		<div class="desc">
+			<input type="text" ng-model="inputTxt" /><br><br>
+			<button ng-click="open()" class="btn btn-primary">Otvori modal</button><br><br>
+			<ul>
+				<li ng-repeat="vijest in oVijesti | filter: inputTxt">
+					{{vijest.post_naziv}}
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
